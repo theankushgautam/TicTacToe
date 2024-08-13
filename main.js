@@ -8,8 +8,8 @@ const TicTacToe = (() => {
   const gameBox = document.querySelectorAll('.box');
   const gameStatus = document.querySelector('.game-message');
 
-  const playerX = playerFactory('John', 'X');
-  const playerO = playerFactory('Robb', 'O');
+  const playerX = playerFactory('Player 1', 'X');
+  const playerO = playerFactory('Player 2', 'O');
   let currentPlayer = playerX;
 
   const handlePlayerTurn = (event) => {
@@ -25,7 +25,6 @@ const TicTacToe = (() => {
     currentPlayer.allChoices.push(choice);
 
     const result = GameModule.playRound(currentPlayer);
-    console.log(result);
 
     if (!result) {
       switchPlayer();
@@ -33,6 +32,9 @@ const TicTacToe = (() => {
       const messageBox = document.createElement('h3');
       messageBox.textContent = `Game Over: ${result}`;
       gameStatus.appendChild(messageBox);
+
+      //highlighting the display of winning lines
+      highlightWin();
 
       gameBox.forEach((button) =>
         button.removeEventListener('click', handlePlayerTurn)
@@ -57,6 +59,18 @@ const TicTacToe = (() => {
     gameBox.forEach((button) =>
       button.addEventListener('click', handlePlayerTurn)
     );
+  };
+
+  const highlightWin = () => {
+    const winningLines = GameModule.getWonPattern();
+
+    for (let i = 0; i < 9; i++) {
+      if (winningLines.includes(gameBox[i].dataset.choice)) {
+        gameBox[i].classList.add('winningLines');
+        console.log(gameBox[i]);
+      }
+    }
+    console.log(winningLines);
   };
 
   return {
