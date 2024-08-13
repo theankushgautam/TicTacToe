@@ -1,54 +1,55 @@
 import { playerFactory } from './playerFactory.js';
-import {GameModule} from './GameModule.js';
+import { GameModule } from './GameModule.js';
 
-const TicTacToe = (()=> {
+const TicTacToe = (() => {
+  const gameBox = document.querySelectorAll('.box');
 
-    const gameBox = document.querySelectorAll('.box');
+  const playerX = playerFactory('John', 'X');
+  const playerO = playerFactory('Robb', 'O');
+  let currentPlayer = playerX;
 
-    const playerX = playerFactory('John','X');
-    const playerO = playerFactory('Robb', 'O');
+  const handlePlayerTurn = (event) => {
+    const choice = event.target.dataset.choice;
 
-    const playerTurn = (player) => {
-        gameBox.forEach(button => button.addEventListener('click', (event) => {
-            player.choice = event.target.dataset.choice;
-            
-        }));
-
-        player.addChoice(player.choice);
-        const result = GameModule.playRound(player);
-
-        console.log(result);
-        return result;
+    if (!choice || currentPlayer.allChoices.includes(choice)) {
+      return; //Ignoring invalid or duplicate choices
     }
 
-    const initializeGame = () => {
-        console.log(playerX.sayHello());
-        console.log(playerO.sayHello());
+    currentPlayer.choice = choice;
+    currentPlayer.allChoices.push(choice);
 
-        let currentPlayer = 'X';
-        let result = false;    
-   
-        while(!result) {
-            if(currentPlayer == 'X') {
-                result = playerTurn(playerX);
-                console.log(result);
-                currentPlayer = 'O';
-            } else {
-                result =  playerTurn(playerO);
-                console.log(result);
-                currentPlayer = 'X';
-            }
-        }
-        
+    const result = GameModule.playRound(currentPlayer);
+    console.log(result);
+
+    if (!result) {
+      switchPlayer();
+    } else {
+      console.log('Game Over: ${result}');
+      gameBox.forEach((button) =>
+        button.removeEventListener('click', handlePlayerTurn)
+      );
     }
+  };
 
-    return {
-        initializeGame,
-    }
+  const switchPlayer = () => {
+    currentPlayer = currentPlayer === playerX ? playerO : playerX;
+  };
 
-})(); 
+  const initializeGame = () => {
+    console.log(playerX.sayHello());
+    console.log(playerO.sayHello());
+
+    gameBox.forEach((button) =>
+      button.addEventListener('click', handlePlayerTurn)
+    );
+  };
+
+  return {
+    initializeGame,
+  };
+})();
 
 //initialize game on page load
-document.addEventListener('DOMContentLoaded',() => {
-    TicTacToe.initializeGame();
-})
+document.addEventListener('DOMContentLoaded', () => {
+  TicTacToe.initializeGame();
+});
