@@ -1,0 +1,52 @@
+body {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.player {
+    padding: 1rem 2rem;
+    background: linear-gradient(54deg, rgba(65, 105, 225, 0.837), rgb(124, 154, 244), rgb(90, 131, 255), rgb(62, 109, 253));
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 1rem;
+    display: inline;
+    color: white;
+    border-radius: .2rem;
+}
+
+.game-container {
+    border: 1px solid lightgray;
+    margin: 3rem auto;
+    padding: 2rem;
+    display: grid;
+    grid-template: repeat(3,100px) / repeat(3, 100px);
+    justify-content: center;
+}
+
+.game-container .box {
+    border: 2px solid lightgray;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: .1rem;
+    border-radius: .2rem;
+}
+
+.unselectable {
+    user-select: none; /* Standard CSS3 */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.box:hover {
+    background: linear-gradient(54deg, rgba(65, 105, 225, 0.837), rgb(124, 154, 244), rgb(90, 131, 255), rgb(62, 109, 253));
+    color: white;
+    opacity: .9;
+}
+.box:active {
+    scale: .9;
+}
